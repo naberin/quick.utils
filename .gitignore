@@ -6,3 +6,8 @@ environment
 # runtime
 __pycache__
 *.pyc
+
+# inputs
+json-file-parser/*.json
+json-file-parser/*.csv
+json-file-parser/*.txt
