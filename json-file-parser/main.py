@@ -9,6 +9,8 @@ logger()
 options = Parser(description="Parse JSON files with filtering options").parse()
 
 filename = options.filename
+verbose = options.verbose
+logger(verbose)
 
 json = Process()\
     .set_file(with_filename=filename)\
