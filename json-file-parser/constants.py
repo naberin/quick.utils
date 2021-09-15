@@ -1,9 +1,9 @@
 class Constants:
     # Logging Defaults
     PROCESS_LOG_NAME = "Process"
-    PARSER_LOG_NAME = "Parser"
+    FILTER_LOG_NAME = "Filter"
     MAIN_LOG_NAME = "Main"
-    LOG_LEVEL = "INFO"
+    LOG_LEVEL = "DEBUG"
     LOG_FORMAT = "[%(asctime)s - %(levelname)-7s %(name)s()] %(message)s"
 
     # Process Defaults
