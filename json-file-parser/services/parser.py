@@ -9,6 +9,7 @@ class Parser:
         keys separated by : (default) or the explicitly defined separator (--separator)""")
         self.parser.add_argument("--separator", dest="separator", help="Specify a separator for filters")
         self.parser.add_argument("-v", dest="verbose", action="store_true", default=False, help="Display logging")
+        self.parser.add_argument("-o", "--out", dest="output", help="Specify a CSV output")
 
     def parse(self):
         options = self.parser.parse_args()
