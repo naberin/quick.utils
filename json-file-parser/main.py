@@ -1,6 +1,6 @@
 import logging
 
-from constants import Constants
+from services.filter import Filter
 from services.parser import Parser
 from services.process import Process
 from services.logger import setup as logger
@@ -14,10 +14,16 @@ verbose = options.verbose
 
 logger(verbose)
 
-json = Process()\
+unfiltered_json = Process()\
     .set_file(with_filename=filename)\
-    .set_filters(with_filters=filters)\
-    .set_separator(with_separator=separator)\
     .read()\
-    .build()
+    .build()\
+    .get()
+
+filtered_json = Filter(separator=separator, filters=filters)\
+    .filter(unfiltered_json)
+
+
+
+
 
