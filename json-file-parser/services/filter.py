@@ -38,6 +38,6 @@ class Filter:
                         in_scope_json_list[json_property] = json_list
                     else:
                         in_scope_json_list[json_property] = in_scope_json[json_property]
-                else:
+                elif not self.filters:
                     in_scope_json_list[json_property] = in_scope_json[json_property]
             return in_scope_json_list if len(in_scope_json_list) else None
