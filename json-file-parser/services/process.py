@@ -12,23 +12,11 @@ class Process:
 
         self.filename = ""
         self.json_string = ""
-        self.filters = ""
-        self.separator = ""
-        self.json = None
+        self.json_actual = None
 
     def set_file(self, with_filename):
         self.log.debug(f"[Selected file: {with_filename}]")
         self.filename = with_filename
-        return self
-
-    def set_filters(self, with_filters):
-        self.log.debug(f"[Filters found: {with_filters}]")
-        self.filters = with_filters
-        return self
-
-    def set_separator(self, with_separator):
-        self.separator = with_separator if with_separator else Constants.DEFAULT_SEPARATOR
-        self.log.debug(f"[Separator set: {self.separator}]")
         return self
 
     def read(self):
@@ -47,10 +35,10 @@ class Process:
     def build(self):
         try:
             if len(self.json_string):
-                self.json = json.loads(self.json_string)
+                self.json_actual = json.loads(self.json_string)
 
-                if isinstance(self.json, list):
-                    self.log.debug(f"[# of JSON Objects found: {len(self.json)}]")
+                if isinstance(self.json_actual, list):
+                    self.log.debug(f"[# of JSON Objects found: {len(self.json_actual)}]")
 
                 self.log.info("Completed JSON processing")
                 return self
@@ -60,3 +48,6 @@ class Process:
         except json.JSONDecodeError:
             self.log.error("JSON may be malformed. PLease check JSON syntax")
             return self
+
+    def get(self):
+        return self.json_actual
