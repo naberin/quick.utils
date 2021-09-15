@@ -11,3 +11,6 @@ __pycache__
 json-file-parser/*.json
 json-file-parser/*.csv
 json-file-parser/*.txt
+
+# package-management
+!json-file-parser/requirements.txt
