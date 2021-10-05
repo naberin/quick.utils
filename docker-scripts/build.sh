@@ -4,7 +4,7 @@
 # variables
 ############################
 BUILD_AND_RUN=true
-REPLACE_ANCESTOR=true
+REPLACE_ANCESTOR=false
 
 APP_LOCATION=''
 
