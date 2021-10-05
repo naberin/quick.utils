@@ -3,6 +3,9 @@
 ############################
 # variables
 ############################
+AZURE_LOGIN=false
+AZURE_ACR_NAME=''
+
 DOCKER_REGISTRY=''
 DOCKER_REGISTRY_USERNAME=''
 DOCKER_REGISTRY_CREDENTIALS_LOCATION=''
@@ -12,11 +15,18 @@ LOCAL_TAG=''
 REMOTE_IMAGE=''
 REMOTE_TAG=''
 
-
-### Logging In
-echo ''
-echo -e '[SCRIPT] Logging on Docker Registry' $DOCKER_REGISTRY
-_LOGIN_RESULT=$(cat $DOCKER_REGISTRY_CREDENTIALS_LOCATION | docker login $DOCKER_REGISTRY -u ${DOCKER_REGISTRY_USERNAME} --password-stdin)
+if [ "$AZURE_LOGIN" = true ]
+then
+    ### Logging In with Azure
+    echo ''
+    echo -e '[SCRIPT] Logging on Docker Registry' $AZURE_ACR_NAME
+    _LOGIN_RESULT=$(az acr login -n $AZURE_ACR_NAME)
+else
+    ### Logging In with Docker
+    echo ''
+    echo -e '[SCRIPT] Logging on Docker Registry' $DOCKER_REGISTRY
+    _LOGIN_RESULT=$(cat $DOCKER_REGISTRY_CREDENTIALS_LOCATION | docker login $DOCKER_REGISTRY -u ${DOCKER_REGISTRY_USERNAME} --password-stdin)
+fi
 
 
 if [ "$_LOGIN_RESULT" == 'Login Succeeded' ]
@@ -33,7 +43,7 @@ then
 
     ### Pushing Tagged Image
     echo ''
-    echo -e '[SCRIPT] Pushing image to Docker Registry' $DOCKER_REGISTRY
+    echo -e '[SCRIPT] Pushing image to Docker Registry'
     _PUSH_RESULT=$(docker push $REMOTE_IMAGE:$REMOTE_TAG -q)
 
     if [ "$_PUSH_RESULT" = $REMOTE_IMAGE:$REMOTE_TAG ]
@@ -44,6 +54,5 @@ then
 
     fi
 else 
-    echo -e '\033[0;31m[SCRIPT]\033[0m Login Failed for' $DOCKER_REGISTRY 'as' $DOCKER_REGISTRY_USERNAME
-
+    echo -e '\033[0;31m[SCRIPT]\033[0m Login Failed'
 fi
