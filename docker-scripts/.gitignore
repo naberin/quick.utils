@@ -1,0 +1,7 @@
+# Ignore Everything
+*
+
+# Only keep .sh files and the README.md
+!*.sh
+!README.md
+!.gitignore
