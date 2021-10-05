@@ -4,6 +4,7 @@
 # variables
 ############################
 AZURE_LOGIN=false
+AZURE_USE_AZ_CLI=false
 AZURE_ACR_NAME=''
 
 DOCKER_REGISTRY=''
@@ -15,17 +16,20 @@ LOCAL_TAG=''
 REMOTE_IMAGE=''
 REMOTE_TAG=''
 
-if [ "$AZURE_LOGIN" = true ]
+if [[ "$AZURE_LOGIN" = true && "$AZURE_USE_AZ_CLI" = true ]]
 then
     ### Logging In with Azure
     echo ''
     echo -e '[SCRIPT] Logging on Docker Registry' $AZURE_ACR_NAME
     _LOGIN_RESULT=$(az acr login -n $AZURE_ACR_NAME)
+    DOCKER_REGISTRY=${AZURE_ACR_NAME}.ocir.io
+
 else
     ### Logging In with Docker
     echo ''
     echo -e '[SCRIPT] Logging on Docker Registry' $DOCKER_REGISTRY
     _LOGIN_RESULT=$(cat $DOCKER_REGISTRY_CREDENTIALS_LOCATION | docker login $DOCKER_REGISTRY -u ${DOCKER_REGISTRY_USERNAME} --password-stdin)
+    
 fi
 
 
@@ -43,7 +47,7 @@ then
 
     ### Pushing Tagged Image
     echo ''
-    echo -e '[SCRIPT] Pushing image to Docker Registry'
+    echo -e '[SCRIPT] Pushing image to Docker Registry' $DOCKER_REGISTRY
     _PUSH_RESULT=$(docker push $REMOTE_IMAGE:$REMOTE_TAG -q)
 
     if [ "$_PUSH_RESULT" = $REMOTE_IMAGE:$REMOTE_TAG ]
@@ -54,5 +58,5 @@ then
 
     fi
 else 
-    echo -e '\033[0;31m[SCRIPT]\033[0m Login Failed'
+    echo -e '\033[0;31m[SCRIPT]\033[0m Login Failed for' $DOCKER_REGISTRY
 fi
